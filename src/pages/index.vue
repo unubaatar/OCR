@@ -1,36 +1,50 @@
 <template>
-  <v-container>
+  <div>
+    <div
+      class="text-center d-flex align-center justify-center"
+      style="
+        width: 100%;
+        height: 80px;
+        background-color: #3a23fc;
+        font-size: 32px;
+        color: white;
+      "
+    >
+      OCR with Flask convertor
+    </div>
     <v-row justify="center">
-      <v-col cols="12" md="6">
-        <h1 class="text-center">OCR with Flask and Vue.js</h1>
-        <v-file-input
-          v-model="selectedFile"
-          label="Choose an Image"
-          outlined
-          dense
-          accept="image/*"
-          @change="onFileChange"
-          style="width: 100%;"
-        ></v-file-input>
+      <v-col cols="12" md="9" class="d-flex flex-column justify-center align-center">
+        <div class="mt-12" style="font-size: 24px;">Та OCR хийх зургаа оруулна уу.</div>
+        <div class="d-flex align-center mt-8">
+          <v-file-input
+            hide-details
+            v-model="selectedFile"
+            label="Зургаа сонгон уу"
+            outlined
+            dense
+            accept="image/*"
+            @change="onFileChange"
+            style="width: 400px"
+          ></v-file-input>
+          <v-btn width="160px" variant="flat" color="primary" height="56px" @click="uploadImage">Хөрвүүлэх</v-btn>
+        </div>
 
-
-        <v-btn @click="uploadImage"> Submit</v-btn>
+    
         <v-progress-circular
           v-if="isLoading"
           indeterminate
           color="primary"
           class="mt-4"
         ></v-progress-circular>
-
-        <v-card v-if="ocrText" class="mt-4">
-          <v-card-title>Extracted Text</v-card-title>
+        <div class="mt-8" style="font-size: 24px;">Таны зургаас таньж авсан text:</div>
+        <v-card variant="outlined" v-if="ocrText" class="mt-8 pa-4" width="560px">
           <v-card-text>
-            <pre>{{ ocrText }}</pre>
+            <pre style="font-size: 20px;">{{ ocrText }}</pre>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -57,14 +71,18 @@ export default {
       const formData = new FormData();
       formData.append("file", this.selectedFile);
 
-      this.isLoading = true; 
+      this.isLoading = true;
 
       try {
-        const response = await axios.post("http://localhost:5000/ocr", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const response = await axios.post(
+          "http://localhost:5000/ocr",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
         this.ocrText = response.data.text;
       } catch (error) {
         console.error("Error uploading image:", error);
