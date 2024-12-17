@@ -36,7 +36,7 @@
           color="primary"
           class="mt-4"
         ></v-progress-circular>
-        <div class="mt-8" style="font-size: 24px;">Таны зургаас таньж авсан text:</div>
+        <div v-if="ocrText" class="mt-8" style="font-size: 24px;">Таны зургаас таньж авсан text:</div>
         <v-card variant="outlined" v-if="ocrText" class="mt-8 pa-4" width="560px">
           <v-card-text>
             <pre style="font-size: 20px;">{{ ocrText }}</pre>
